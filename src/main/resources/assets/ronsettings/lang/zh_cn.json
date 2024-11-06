@@ -1,0 +1,14 @@
+{
+
+  "language": "Chinese",
+  "language.code": "zh_cn",
+  "language.region": "China",
+
+  "command.ronsettings.no_players_found": "未找到玩家.",
+  "command.ronsettings.modify.success": " §f%d 单位的 %s 资源成功给予给了 \u00a7l%s",
+  "command.ronsettings.invalid_target": "[RONSettings]: %s",
+
+  "resource.food": "食物",
+  "resource.wood": "木材",
+  "resource.ore": "矿石"
+}

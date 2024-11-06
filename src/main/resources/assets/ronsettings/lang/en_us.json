@@ -1,0 +1,14 @@
+{
+  "language": "English",
+  "language.code": "en_us",
+  "language.region": "United States",
+
+
+  "command.ronsettings.no_players_found": "No players found.",
+  "command.ronsettings.modify.success": "§f%d units of %s successfully gave \u00a7l%s",
+  "command.ronsettings.invalid_target": "[RONSettings]: %s",
+
+  "resource.food": "Food",
+  "resource.wood": "Wood",
+  "resource.ore": "Ore"
+}
