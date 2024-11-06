@@ -20,6 +20,7 @@ import java.util.Collection;
 public class RONModifyResourcesCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("rts-modifyresources")
+                .requires(source -> source.hasPermission(2)) // 确保只有具有特定权限的玩家才能执行此命令
                 .then(Commands.argument("target", EntityArgument.players())
                         .then(Commands.literal("give")
                                 .then(Commands.literal("food")
