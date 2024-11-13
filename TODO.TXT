@@ -1,0 +1,7 @@
+1.0.7
+增加/rts-unitsparameter指令，用于查询存活单位和阵营单位的数据
+为单位自动分配阵营tag:villager、monster、piglin，使用方法tag=
+
+1.0
+增加指令/rts-modifyresources
+用于增加或者设置3种资源的数量
