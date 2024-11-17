@@ -112,25 +112,25 @@ public class RONModifyResourcesCommand {
                     case "food":
                         oldAmount = resources.food;
                         if (operation.equals("give")) {
-                            resources.food = Math.max(resources.food + amount, 0);
+                            resources.food = resources.food + amount;
                         } else if (operation.equals("set")) {
-                            resources.food = Math.max(amount, 0);
+                            resources.food = amount;
                         }
                         break;
                     case "wood":
                         oldAmount = resources.wood;
                         if (operation.equals("give")) {
-                            resources.wood = Math.max(resources.wood + amount, 0);
+                            resources.wood =resources.wood + amount;
                         } else if (operation.equals("set")) {
-                            resources.wood = Math.max(amount, 0);
+                            resources.wood = amount;
                         }
                         break;
                     case "ore":
                         oldAmount = resources.ore;
                         if (operation.equals("give")) {
-                            resources.ore = Math.max(resources.ore + amount, 0);
+                            resources.ore = resources.ore + amount;
                         } else if (operation.equals("set")) {
-                            resources.ore = Math.max(amount, 0);
+                            resources.ore = amount;
                         }
                         break;
                 }
