@@ -19,7 +19,7 @@ modId="ronsettings" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="1.0" #mandatory
+version="1.0.10" #mandatory
  # A display name for the mod
 displayName="Ron Settings" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -27,7 +27,7 @@ displayName="Ron Settings" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="examplemod.png" #optional
+logoFile="icon.png.png" #optional
 # A text field displayed in the mod UI
 credits="IamAlittle, AI: Fitten Code Chat,Copilot,gpt 3.5-turbo" #optional
 # A text field displayed in the mod UI
@@ -66,6 +66,6 @@ description='''设置单位与建筑数值的mod'''
 [[dependencies.ronsettings]]
     modId="reignofnether"
     mandatory=true
-    versionRange="[1.0.6a,)"
-    ordering="BEFORE"
+    versionRange="[1.0.10,)"
+    ordering="NONE"
     side="BOTH"
