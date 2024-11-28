@@ -17,10 +17,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.entity.LivingEntity;
+
 import java.lang.reflect.Field; // 引入反射类
 import java.util.List;
 import java.util.Set;
@@ -43,24 +43,25 @@ public class UnitsParameter {
                                 .executes(context -> {
                                     String factionString = context.getArgument("faction", String.class);
                                     Faction faction = Faction.valueOf(factionString.toUpperCase()); // 转化为Faction枚举
-                                    return execute(context, faction);
+                                    return UnitsPresent(context, faction);
                                 })
                         )
                         .then(Commands.literal("all")
                                 .executes(context -> {
                                     String factionString = context.getArgument("faction", String.class);
                                     Faction faction = Faction.valueOf(factionString.toUpperCase()); // 转化为Faction枚举
-                                    return executeAll(context, faction);
+                                    return UnitsAll(context, faction);
                                 }) // 新增的all命令
                         )
                 )
         );
     }
 
-    private static int execute(CommandContext<CommandSourceStack> context, Faction faction) {
+    private static int UnitsPresent(CommandContext<CommandSourceStack> context, Faction faction) {
         // 根据阵营获取单位列表
         StringBuilder responseMessage = new StringBuilder("阵营: " + faction.name() + " 单位参数:\n");
         List<Unit> units = getUnitsByFaction(faction);
+
         if (units.isEmpty()) {
             responseMessage.append("没有找到该阵营的单位。");
         } else {
@@ -68,17 +69,24 @@ public class UnitsParameter {
                 // 处理单个单位信息
                 String unitName = unit.getClass().getSimpleName().replace("Unit", "");
                 responseMessage.append("\u00a7a单位(Unit): \u00a7f").append(unitName)
-                        .append(", \u00a7a生命值(HP): \u00a7f").append((unit.getUnitMaxHealth()));
-                if (unit instanceof AttackerUnit attackerUnit) {
-                    responseMessage.append(", \u00a7a攻击力(AD): \u00a7f").append((attackerUnit.getUnitAttackDamage()))
-                            .append(", \u00a7a攻击速度(ASPD): \u00a7f").append((attackerUnit.getAttacksPerSecond()))
-                            .append(", \u00a7a攻击距离(AR): \u00a7f").append((attackerUnit.getAttackRange()));
-                }
-                responseMessage.append(", \u00a7a护甲(AC): \u00a7f").append((unit.getUnitArmorValue()))
-                        .append(", \u00a7a移动速度(SPD): \u00a7f").append((unit.getMovementSpeed()))
-                        .append("\n")
-                        .append("\u00a7a拥有者(Owner): \u00a7f").append(unit.getOwnerName()).append("\n");
+                        .append(", \u00a7a当前生命值(HP): \u00a7f").append(((LivingEntity) unit).getHealth()); // 获取当前生命值
 
+
+
+
+                if (unit instanceof AttackerUnit attackerUnit) {
+                    responseMessage.append(", \u00a7a攻击力(AD): \u00a7f").append(attackerUnit.getUnitAttackDamage())
+                            .append(", \u00a7a攻击速度(ASPD): \u00a7f").append(attackerUnit.getAttacksPerSecond())
+                            .append(", \u00a7a攻击距离(AR): \u00a7f").append(attackerUnit.getAttackRange());
+                }
+
+                // 恢复显示静态的移动速度
+                responseMessage.append(", \u00a7a移动速度(SPD): \u00a7f").append(unit.getMovementSpeed())
+                        .append("\n")
+                        .append("\u00a7a拥有者(Owner): \u00a7f").append(unit.getOwnerName()).append("\n")
+                .append("\u00a7a单位UUID: \u00a7f").append(((LivingEntity) unit).getUUID()).append("\n"); // 添加显示UUID的行;
+
+                // 获取单位的资源成本
                 ResourceCost resourceCost = getResourceCostForUnit(unit);
                 if (resourceCost != null) {
                     StringBuilder resourceString = new StringBuilder();
@@ -91,21 +99,24 @@ public class UnitsParameter {
                     if (resourceCost.ore > 0) {
                         resourceString.append("ore:").append(resourceCost.ore).append("、");
                     }
+                    // 删除最后一个“、”字符
                     if (resourceString.length() > 0) {
                         resourceString.setLength(resourceString.length() - 1);
                     }
-                    responseMessage.append("所需资源: ").append(resourceString).append("\n").append("\n");
+                    responseMessage.append("所需资源(Resource): ").append(resourceString).append("\n").append("\n");
                 } else {
-                    responseMessage.append("所需资源: 未定义\n");
+                    responseMessage.append("所需资源(Resource): 未定义\n");
                 }
             }
+
         }
 
         context.getSource().sendSuccess(Component.literal(responseMessage.toString()), true);
         return 1;
     }
 
-    private static int executeAll(CommandContext<CommandSourceStack> context, Faction faction) {
+
+    private static int UnitsAll(CommandContext<CommandSourceStack> context, Faction faction) {
         StringBuilder responseMessage = new StringBuilder("阵营: " + faction.name() + " 单位列表:\n");
 
         // 反射获取单位数据并输出
@@ -135,6 +146,7 @@ public class UnitsParameter {
                 unitClasses = new Class[]{
                         EvokerUnit.class,
                         IronGolemUnit.class,
+                        MilitiaUnit.class,
                         PillagerUnit.class,
                         RavagerUnit.class,
                         VillagerUnit.class,
@@ -182,10 +194,12 @@ public class UnitsParameter {
                 } else {
                     resourceString.append("未定义");
                 }
+
                 // 逐一输出各单位的静态属性
-                responseMessage.append(String.format("单位: %s, 最大生命值: %.2f, 攻击力: %.2f, " +
-                                "攻击速度: %.2f, 护甲值: %.2f, 移动速度: %.2f, 攻击范围: %.2f, 仇恨范围: %.2f\n所需资源: %s\n\n",
-                        unitClass.getSimpleName(), maxHealth, attackDamage, attacksPerSecond,
+                responseMessage.append(String.format("\u00a7a单位(Unit):\u00a7f %s, \u00a7a最大生命值(HP):\u00a7f %.2f, \u00a7a攻击力(AD):\u00a7f %.2f, " +
+                                "\u00a7a攻击速度(ASPD):\u00a7f %.2f, \u00a7a护甲值(AC):\u00a7f %.2f, \u00a7a移动速度(SPD):\u00a7f %.2f, " +
+                                "\u00a7a攻击范围(AR):\u00a7f %.2f, \u00a7a仇恨范围（HRA）:\u00a7f %.2f\n所需资源(Resource): %s\n\n",
+                        unitClass.getSimpleName().replace("Unit", ""), maxHealth, attackDamage, attacksPerSecond,
                         armorValue, movementSpeed, attackRange, aggroRange, resourceString.toString()));
             }
 
@@ -247,6 +261,7 @@ public class UnitsParameter {
 
             case "EvokerUnit" -> ResourceCosts.EVOKER;
             case "IronGolemUnit" -> ResourceCosts.IRON_GOLEM;
+            case "MilitiaUnit" -> ResourceCosts.MILITIA;
             case "PillagerUnit" -> ResourceCosts.PILLAGER;
             case "RavagerUnit" -> ResourceCosts.RAVAGER;
             case "VillagerUnit" -> ResourceCosts.VILLAGER;
