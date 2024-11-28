@@ -1,3 +1,6 @@
+1.0.10
+增加unitsparameter查询民兵
+
 1.0.7
 增加/rts-unitsparameter指令，用于查询存活单位和阵营单位的数据
 为单位自动分配阵营tag:villager、monster、piglin，使用方法tag=
