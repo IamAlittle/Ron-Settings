@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7.+' // 确保使用最新的 Mixin 版本
-        //classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 plugins {
@@ -25,12 +25,12 @@ apply plugin: 'org.spongepowered.mixin'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'maven-publish'
 
-version = '1.0.10'
+version = '1.0.10a'
 group = 'com.iamalittle.ronsettings' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ronsettings'
-mixin {
-    add sourceSets.main, "ronsettings.refmap.json"
-}
+//mixin {
+//    add sourceSets.main, "ronsettings.refmap.json"
+//}
 
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
@@ -68,7 +68,7 @@ minecraft {
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
             //客户端中指定你资源包中的mixin文件
-            arg '-mixin.config=ronsettings.mixins.json'
+            //arg '-mixin.config=ronsettings.mixins.json'
 
             // Recommended logging level for the console
             // You can set various levels here.
@@ -95,7 +95,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'examplemod'
 
             //数据包中指定你资源包中的mixin文件
-            arg '-mixin.config=ronsettings.mixins.json'
+            //arg '-mixin.config=ronsettings.mixins.json'
 
             mods {
                 ronsettings {
@@ -134,7 +134,7 @@ minecraft {
             args '--mod', 'ronsettings', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             //数据包中指定你资源包中的mixin文件
-            arg '-mixin.config=ronsettings.mixins.json'
+            //arg '-mixin.config=ronsettings.mixins.json'
 
             mods {
                 examplemod {
@@ -206,7 +206,7 @@ jar {
                 "Implementation-Vendor"   : "IamALittle",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 //你资源包中的mixin配置文件
-                "MixinConfigs": "ronsettings.mixins.json"
+                //"MixinConfigs": "ronsettings.mixins.json"
         ])
     }
 }
