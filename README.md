@@ -14,7 +14,7 @@ reignofnether add settings、reignofnether模组增加设置
 
 # op Command/rts-modifyresources [player] [give|set] [food|ore|wood] amount
 Gift resources and set resources
-# Add the/rs Unitsparameter command to query data for surviving units and faction units
+# Add the//rts-unitsparameter command to query data for surviving units and faction units
 
 # Assign tags
 After players join the game, they will enter the rts player list, automatically add team rts_units_team data tags to rts players and units, and assign them in order. When the rts player is 0, the assignment order will be reset.
