@@ -1,3 +1,6 @@
+1.0.12
+增加unitsparameter查询史莱姆与岩浆怪
+
 1.0.11
 玩家加入对局后进入rts玩家列表，自动为rts玩家与单位添加队伍rts_units_team数据标签，顺序分配，rts玩家为0时重置分配顺序
 指令/rts-refreshRTSteamTagsList可手动刷新rts玩家列表
