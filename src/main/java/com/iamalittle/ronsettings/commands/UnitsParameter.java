@@ -80,11 +80,11 @@ public class UnitsParameter {
                             .append(", \u00a7a攻击距离(AR): \u00a7f").append(attackerUnit.getAttackRange());
                 }
 
-                // 恢复显示静态的移动速度
+
                 responseMessage.append(", \u00a7a移动速度(SPD): \u00a7f").append(unit.getMovementSpeed())
                         .append("\n")
                         .append("\u00a7a拥有者(Owner): \u00a7f").append(unit.getOwnerName()).append("\n")
-                .append("\u00a7a单位UUID: \u00a7f").append(((LivingEntity) unit).getUUID()).append("\n"); // 添加显示UUID的行;
+                .append("\u00a7a单位UUID: \u00a7f").append(((LivingEntity) unit).getUUID()).append("\n");
 
                 // 获取单位的资源成本
                 ResourceCost resourceCost = getResourceCostForUnit(unit);
@@ -126,9 +126,17 @@ public class UnitsParameter {
         switch (faction) {
             case MONSTERS:
                 unitClasses = new Class[]{
-                        CreeperUnit.class, DrownedUnit.class, HuskUnit.class, SilverfishUnit.class,
-                        SkeletonUnit.class, SpiderUnit.class, StrayUnit.class, ZoglinUnit.class,
-                        ZombieUnit.class, ZombieVillagerUnit.class
+                        CreeperUnit.class,
+                        DrownedUnit.class,
+                        HuskUnit.class,
+                        SilverfishUnit.class,
+                        SkeletonUnit.class,
+                        SlimeUnit.class,
+                        SpiderUnit.class,
+                        StrayUnit.class,
+                        ZoglinUnit.class,
+                        ZombieUnit.class,
+                        ZombieVillagerUnit.class
                 };
                 break;
             case PIGLINS:
@@ -139,6 +147,7 @@ public class UnitsParameter {
                         GruntUnit.class,
                         HeadhunterUnit.class,
                         HoglinUnit.class,
+                        MagmaCubeUnit.class,
                         WitherSkeletonUnit.class
                 };
                 break;
@@ -243,6 +252,7 @@ public class UnitsParameter {
             case "PoisonSpiderUnit" -> ResourceCosts.POISON_SPIDER;
             case "SpiderUnit" -> ResourceCosts.SPIDER;
             case "SkeletonUnit" -> ResourceCosts.SKELETON;
+            case "SlimeUnit" -> ResourceCosts.SLIME;
             case "StrayUnit" -> ResourceCosts.STRAY;
             case "WardenUnit" -> ResourceCosts.WARDEN;
             case "ZombieUnit" -> ResourceCosts.ZOMBIE;
@@ -258,6 +268,7 @@ public class UnitsParameter {
             case "GruntUnit" -> ResourceCosts.GRUNT;
             case "HeadhunterUnit" -> ResourceCosts.HEADHUNTER;
             case "HoglinUnit" -> ResourceCosts.HOGLIN;
+            case "MagmaCubeUnit" -> ResourceCosts.MAGMA_CUBE;
 
             case "EvokerUnit" -> ResourceCosts.EVOKER;
             case "IronGolemUnit" -> ResourceCosts.IRON_GOLEM;
